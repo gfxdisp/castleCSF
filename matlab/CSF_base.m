@@ -48,7 +48,7 @@ classdef CSF_base
         % 'lms_bkg' and 'lms_delta' must have their last dimension of size 3. 
         %
         % For best performance, pass vectors with the the required number
-        % of parameters. Do not call the sensitivity() function in a loop.      
+        % of parameters. Avoid calling the sensitivity() function in a loop.      
         %
         % You must specify 'luminance' or 'lms_bkg' but not both. 
         % You must specify 'area' or 'ge_sigma' but not both. 

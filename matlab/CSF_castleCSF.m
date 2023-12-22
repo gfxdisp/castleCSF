@@ -1,7 +1,10 @@
 classdef CSF_castleCSF < CSF_base
     % Colour, Area, Spatial frequency, Temporal frequency, Luminance,
     % Eccentricity dependent Contrast Sensitivity Function (CSF)
-    
+    %
+    % Refer to CSF_base.m for the documentation of the main interface
+    % functions. 
+
     properties( Constant )
        % which entries in the meachism matrix should be fixed to 1
         Mones = [ 1 1 0;
@@ -16,8 +19,7 @@ classdef CSF_castleCSF < CSF_base
         Y_max = 10000;  % The maximum luminance
         rho_min = 2^-4  % The minimum spatial frequency
         rho_max = 64;   % The maximum spatial frequency
-        ecc_max = 120;  % The maximum eccentricity
-        
+        ecc_max = 120;  % The maximum eccentricity        
         
     end
     
@@ -302,6 +304,7 @@ classdef CSF_castleCSF < CSF_base
     methods ( Static )
        
         function p = get_default_par()
+            % The list of trainable parameters and their default values. 
 
             p = CSF_base.get_dataset_par();
 
@@ -348,7 +351,6 @@ classdef CSF_castleCSF < CSF_base
             p.ach.ecc_drop_f = 0.0217926;
             p.ach.ecc_drop_f_nasal = 0.0068348;
             p.colmat = [ 1.95127 0 0 86.9163 ];
-
 
         end
     end
