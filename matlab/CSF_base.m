@@ -119,11 +119,27 @@ classdef CSF_base
             csf_pars = struct( 's_frequency', s_freq, 't_frequency', t_freq, 'orientation', orientation, 'lms_bkg', LMS_bkg, 'lms_delta', LMS_delta, 'area', area, 'eccentricity', eccentricity, 'vis_field', vis_field );
             S = obj.sensitivity( csf_pars );
         end        
+		function S = sensitivity_stolmsv_jov( obj, s_freq, t_freq, orientation, LMS_bkg, LMS_delta, area, eccentricity, vis_field, col_dir )
+            csf_pars = struct( 's_frequency', s_freq, 't_frequency', t_freq, 'orientation', orientation, 'lms_bkg', LMS_bkg, 'lms_delta', LMS_delta, 'area', area, 'eccentricity', eccentricity, 'vis_field', vis_field );
+            if strcmp(class(obj.csf_model), 'CSF_Wuerger2020')
+                S = obj.sensitivity( csf_pars, col_dir );
+            else
+                S = obj.sensitivity( csf_pars );
+            end
+        end 																																																		  
         
         function S = sensitivity_stolms_edge( obj, t_freq, orientation, LMS_bkg, LMS_delta, ge_sigma, eccentricity )
             csf_pars = struct( 't_frequency', t_freq, 'orientation', orientation, 'lms_bkg', LMS_bkg, 'lms_delta', LMS_delta, 'ge_sigma', ge_sigma, 'eccentricity', eccentricity);
             S = obj.sensitivity_edge( csf_pars );
         end 
+		function S = sensitivity_stolms_edge_jov( obj, t_freq, orientation, LMS_bkg, LMS_delta, ge_sigma, eccentricity, col_dir )
+            csf_pars = struct( 't_frequency', t_freq, 'orientation', orientation, 'lms_bkg', LMS_bkg, 'lms_delta', LMS_delta, 'ge_sigma', ge_sigma, 'eccentricity', eccentricity);
+            if strcmp(class(obj.csf_model), 'CSF_Wuerger2020')
+                S = obj.csf_model.sensitivity_edge( csf_pars, col_dir );
+            else
+                S = obj.sensitivity_edge( csf_pars );
+            end
+        end 																																														 
         
         % Test whether all the parameters are correct size, that the
         % names are correct, set the default values for the missing
