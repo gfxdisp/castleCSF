@@ -219,10 +219,19 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
                     clf;
                     html_change_figure_print_size( gcf, 10, 10 );
                     omega = linspace( 0, 100 );
-                    [R_sust, R_trans] = obj.get_sust_trans_resp(omega);
-                    hh(1) = plot( omega, R_sust, 'DisplayName', 'Sustained');
-                    hold on
-                    hh(2) = plot( omega, R_trans, 'DisplayName', 'Transient');
+					lums = [0.1 30 1000];
+
+                    hold on,
+                    
+                    for ll = 1:length(lums)
+                        [R_sust, R_trans] = obj.get_sust_trans_resp(omega, lums(ll));
+                        if ll == 1
+                            hh(1) = plot( omega, R_sust, 'DisplayName', 'Sustained');
+                        end
+                        hh(ll+1) = plot( omega, R_trans, 'DisplayName',... 
+                            sprintf('Transient (%g cd/m^2)', lums(ll)));
+                        
+                    end
                     hold off
                     xlabel( 'Temp. freq. [Hz]' );
                     ylabel( 'Response' );

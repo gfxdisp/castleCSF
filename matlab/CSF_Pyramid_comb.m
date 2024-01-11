@@ -42,7 +42,7 @@ classdef CSF_Pyramid_comb < CSF_base
         
         function name = short_name( obj )
             % A short name that could be used as a part of a file name
-            name = 'csf-pyramid-comb';
+            name = 'csf-chrom-pyramid';
         end
         
         function name = full_name( obj )

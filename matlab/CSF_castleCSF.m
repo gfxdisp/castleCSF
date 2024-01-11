@@ -27,7 +27,7 @@ classdef CSF_castleCSF < CSF_base
         use_gpu = true;
         ps_beta = 1;
         
-        caslteCSF_ach = [];
+        castleCSF_ach = [];
         castleCSF_rg = [];
         castleCSF_yv = [];
     end
@@ -36,9 +36,9 @@ classdef CSF_castleCSF < CSF_base
        
         function obj = CSF_castleCSF(  )
             
-            obj.caslteCSF_ach = CSF_stelaCSF_lum_peak();
-            obj.castleCSF_rg = CSF_chrom('rg');
-            obj.castleCSF_yv = CSF_chrom('yv');
+            obj.castleCSF_ach = CSF_stelaCSF_lum_peak();
+            obj.castleCSF_rg = CSF_castleCSF_chrom('rg');
+            obj.castleCSF_yv = CSF_castleCSF_chrom('yv');
             obj.par = obj.get_default_par();
             
         end
@@ -92,7 +92,7 @@ classdef CSF_castleCSF < CSF_base
             
 %             obj = obj.update_parameters();
             
-            C_A_n = C_A.*obj.caslteCSF_ach.sensitivity(csf_pars);
+            C_A_n = C_A.*obj.castleCSF_ach.sensitivity(csf_pars);
             C_R_n = C_R.*obj.castleCSF_rg.sensitivity(csf_pars);
             C_Y_n = C_Y.*obj.castleCSF_yv.sensitivity(csf_pars);
             
@@ -237,16 +237,28 @@ classdef CSF_castleCSF < CSF_base
                     clf;
                     html_change_figure_print_size( gcf, 10, 10 );
                     omega = linspace( 0, 60 );
-                    [R_sust, R_trans] = obj.caslteCSF_ach.get_sust_trans_resp(omega);
-                    hh(1) = plot( omega, R_sust, '-k', 'DisplayName', 'Sustained (achromatic)');
-                    hold on
-                    hh(2) = plot( omega, R_trans, '--k', 'DisplayName', 'Transient (achromatic)');
+                    lums = [0.1 30 1000];
+																								
+						   
+																								  
 
+                    hold on,
+                    
+                    for ll = 1:length(lums)
+                        [R_sust, R_trans] = obj.castleCSF_ach.get_sust_trans_resp(omega, lums(ll));
+                        if ll == 1
+                           hh(1) = plot( omega, R_sust, '-k', 'DisplayName', 'Sustained (achromatic)');
+                        end
+                        hh(ll+1) = plot( omega, R_trans, 'LineStyle', '--',...
+                            'DisplayName',... 
+                            sprintf('Transient (achromatic) (%g cd/m^2)', lums(ll)));                      
+                    end
+                    
                     R_sust = obj.castleCSF_rg.get_sust_trans_resp(omega);                    
-                    hh(3) = plot( omega, R_sust, '-r', 'DisplayName', 'Sustained (red-green)');
+                    hh(5) = plot( omega, R_sust, '-r', 'DisplayName', 'Sustained (red-green)');
 
                     R_sust = obj.castleCSF_yv.get_sust_trans_resp(omega);                    
-                    hh(4) = plot( omega, R_sust, 'Color', [0.6 0 1], 'DisplayName', 'Sustained (yellow-violet)');
+                    hh(6) = plot( omega, R_sust, 'Color', [0.6 0 1], 'DisplayName', 'Sustained (yellow-violet)');
                     hold off
                     xlabel( 'Temp. freq. [Hz]' );
                     ylabel( 'Response' );
@@ -254,7 +266,7 @@ classdef CSF_castleCSF < CSF_base
                     grid on;
 
                 case 'peak_s' 
-                    obj.caslteCSF_ach.plot_mechanism(plt_id);
+                    obj.castleCSF_ach.plot_mechanism(plt_id);
 
                 otherwise
                     error( 'Wrong plt_id' );
@@ -270,7 +282,7 @@ classdef CSF_castleCSF < CSF_base
         % Copy parameters to from this object to individual CSF components
         function obj = update_parameters (obj)
 
-            obj.caslteCSF_ach.par = CSF_base.update_struct( obj.par.ach, obj.caslteCSF_ach.par );
+            obj.castleCSF_ach.par = CSF_base.update_struct( obj.par.ach, obj.castleCSF_ach.par );
             obj.castleCSF_rg.par = CSF_base.update_struct( obj.par.rg, obj.castleCSF_rg.par );
             obj.castleCSF_yv.par = CSF_base.update_struct( obj.par.yv, obj.castleCSF_yv.par );
             
@@ -288,7 +300,7 @@ classdef CSF_castleCSF < CSF_base
 
             % Printed formatted parameters for the component classes
             fprintf(fh, 'Parameters for Ach component:\n');
-            obj.caslteCSF_ach.print(fh);
+            obj.castleCSF_ach.print(fh);
             fprintf(fh, '\n');
 
             fprintf(fh, 'Parameters for RG component:\n');

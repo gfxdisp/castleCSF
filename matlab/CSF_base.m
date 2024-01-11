@@ -108,7 +108,7 @@ classdef CSF_base
 
         function S = sensitivity_stolms_jov( obj, s_freq, t_freq, orientation, LMS_bkg, LMS_delta, area, eccentricity, col_dir )
             csf_pars = struct( 's_frequency', s_freq, 't_frequency', t_freq, 'orientation', orientation, 'lms_bkg', LMS_bkg, 'lms_delta', LMS_delta, 'area', area, 'eccentricity', eccentricity );
-            if strcmp(class(obj.csf_model), 'CSF_JOV')
+            if strcmp(class(obj.csf_model), 'CSF_Wuerger2020')
                 S = obj.csf_model.sensitivity( csf_pars, col_dir );
             else
                 S = obj.csf_model.sensitivity( csf_pars );

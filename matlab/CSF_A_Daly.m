@@ -87,12 +87,12 @@ classdef CSF_A_Daly < CSF_base
         function p = get_default_par()
             
             p = CSF_base.get_dataset_par();
-            p.P = 148.038;
-			p.ob = 1.27214;
-			p.k = 0.24;
-			p.epsilon = 1.16716;
-			p.a_l_m = 1.37258;
-			p.b_l_m = 65.154;
+            p.P = 133.9;
+			p.ob = 1.44757;
+			p.k = 0.206707;
+			p.epsilon = 1.39533;
+			p.a_l_m = 1.967;
+			p.b_l_m = 13.5589;
         end
         
     end

@@ -27,7 +27,7 @@ classdef CSF_PostReceptContrast < CSF_base
         
         function name = short_name( obj )
             % A short name that could be used as a part of a file name
-            name = 'post-recept-contrast-mat';
+            name = 'post-recept-contrast';
         end
         
         function name = full_name( obj )
@@ -280,22 +280,25 @@ classdef CSF_PostReceptContrast < CSF_base
             
             p = CSF_base.get_dataset_par();
 
-			p.ach.S_max = [ 20499.6 21.4108 0.243117 276405 0.00303308 ];
-			p.ach.f_max = [ 1.62832 268.674 0.215424 ];
-			p.ach.bw = 0.185226;
-			p.ach.gamma = 0.904648;
-			p.ach.Ac_prime = 46.6295;
-			p.rg.S_max = [ 3900.41 13.767 0.645983 ];
-			p.rg.f_max = 0.0116232;
-			p.rg.bw = 2.53994;
-			p.rg.gamma = 1.44612;
-			p.rg.Ac_prime = 2.24541;
-			p.yv.S_max = [ 83666.7 22.4433 0.511101 ];
-			p.yv.f_max = 0.0012374;
-			p.yv.bw = 2.82036;
-			p.yv.gamma = 1.36762;
-			p.yv.Ac_prime = 1.92925;
-			p.colmat = [ 0.0138517 4.22238 2.19247 0.103 3.89314e-06 0.000153138 ];            
+			p.ach.S_max = [ 521.522 4.28047 0.205589 14370 0.727125 ];
+			p.ach.f_max = [ 1.63716 208.669 0.217275 ];
+			p.ach.bw = 0.100024;
+			p.ach.gamma = 0.939377;
+			p.ach.Ac_prime = 58.0308;
+			
+			p.rg.S_max = [ 1656.93 21.116 0.516516 ];
+			p.rg.f_max = 0.0437323;
+			p.rg.bw = 2.25658;
+			p.rg.gamma = 1.61491;
+			p.rg.Ac_prime = 1.98645;
+			
+			p.yv.S_max = [ 61559.5 34.6744 0.456428 ];
+			p.yv.f_max = 0.000904801;
+			p.yv.bw = 3.02109;
+			p.yv.gamma = 1.40366;
+			p.yv.Ac_prime = 2.30455;
+			
+			p.colmat = [ 0.0345069 3.05716 2.25236 0.0625121 3.89577e-06 0.853869 ]; 
 			
         end
         

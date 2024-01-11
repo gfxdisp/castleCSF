@@ -1,7 +1,7 @@
-classdef CSF_chrom < CSF_base
+classdef CSF_castleCSF_chrom < CSF_base
     % The class predicts contrast sensitivity as the functioon of
     % Spatio-Temporal frequency, Eccentricity, Luminance and Area for
-    % red-green and yellow-violeet isoluminant stimuli
+    % red-green and yellow-violet isoluminant stimuli
 
     properties( Constant )
         Y_min = 0.001;  % The minimum luminance
@@ -18,18 +18,18 @@ classdef CSF_chrom < CSF_base
 
     methods
 
-        function obj = CSF_chrom( colour )
+        function obj = CSF_castleCSF_chrom( colour )
 
             obj.par = obj.get_default_par( colour );
         end
 
         function name = short_name( obj )
             % A short name that could be used as a part of a file name
-            name = 'csf-chrom';
+            name = 'castle-csf-chrom';
         end
 
         function name = full_name( obj )
-            name = 'CSF-chrom';
+            name = 'castleCSF-chrom';
         end
 
         % Return contrast sensitivity for a given set of parameters. 
@@ -308,31 +308,31 @@ classdef CSF_chrom < CSF_base
       
             switch colour
                 case 'rg'
-                    p.ch_sust.S_max = [ 730.147 38.2307 0.469349 ];
-                    p.ch_sust.f_max = 0.0169475;
-                    p.ch_sust.bw = 2.46441;
-                    p.A_0 = 2879.13;
-                    p.f_0 = 0.0704339;
-                    p.sigma_sust = 16.541;
-                    p.beta_sust = 1.15549;
-                    p.ecc_drop = 0.0591431;
-                    p.ecc_drop_nasal = 2.89648e-05;
-                    p.ecc_drop_f = 2.04986e-69;
-                    p.ecc_drop_f_nasal = 0.180118;
-
+                    p.ch_sust.S_max = [ 603.119 39.1484 0.469632 ];
+					p.ch_sust.f_max = 0.0252664;
+					p.ch_sust.bw = 2.29106;
+					p.A_0 = 2576.1;
+					p.f_0 = 0.0728586;
+					p.sigma_sust = 16.505;
+					p.beta_sust = 1.15244;
+					p.ecc_drop = 0.0591377;
+					p.ecc_drop_nasal = 2.89541e-05;
+					p.ecc_drop_f = 2.04986e-69;
+					p.ecc_drop_f_nasal = 0.172617;
+																					 
                 case 'yv'
-                    p.ch_sust.S_max = [ 99.6752 62.5513 0.407922 ];
-                    p.ch_sust.f_max = 0.00363324;
-                    p.ch_sust.bw = 2.72495;
-                    p.A_0 = 2.85765e+07;
-                    p.f_0 = 0.000648528;
-                    p.sigma_sust = 7.9187;
-                    p.beta_sust = 0.999363;
-                    p.ecc_drop = 0.00357397;
-                    p.ecc_drop_nasal = 5.85804e-141;
-                    p.ecc_drop_f = 0.0080878;
-                    p.ecc_drop_f_nasal = 0.0147658;
-
+                    p.ch_sust.S_max = [ 153.288 67.8963 0.404577 ];
+					p.ch_sust.f_max = 0.00493065;
+					p.ch_sust.bw = 2.65931;
+					p.A_0 = 2.81739e+07;
+					p.f_0 = 0.000630395;
+					p.sigma_sust = 8.23433;
+					p.beta_sust = 1.03276;
+					p.ecc_drop = 0.00356433;
+					p.ecc_drop_nasal = 5.85804e-141;
+					p.ecc_drop_f = 0.00805084;
+					p.ecc_drop_f_nasal = 0.00966713;
+										 								
                 otherwise
                     error('Invalid colour direction supplied');
             end
