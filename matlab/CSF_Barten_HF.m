@@ -220,14 +220,14 @@ classdef CSF_Barten_HF < CSF_base
             
             p         = CSF_base.get_dataset_par();
 
-            p.k       = 3;
-            p.sigma0  = 0.5;
-            p.u0      = 7;
-            p.tau10   = 0.032;
-            p.tau20   = 0.018;
-            p.k_tem   = 0.5;
-            p.k_nas   = 0.1;
-            p.t       = 3.5;
+            p.k       = 7.13817;
+            p.sigma0  = 0.384239;
+            p.u0      = 2.45004;
+            p.tau10   = 0.0366639;
+            p.tau20   = 0.0917171;
+            p.k_tem   = 0.53431;
+            p.k_nas   = 0.20627;
+            p.t       = 1.00901;
 
         end
 
