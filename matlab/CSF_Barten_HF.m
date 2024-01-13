@@ -132,7 +132,7 @@ classdef CSF_Barten_HF < CSF_base
             H2        = 1./(1+(2*pi.*w.*tau2).^2).^(n2/2); % lateral inhibation
 
             % Modulation transfer function of the lateral inhibition process
-            F         = 1-(1-exp(-(u./u0).^2)).^0.5; % high-pass filter characterizing lateral inhibation
+            F         = 1-(1-exp(-(u./u0).^2)).^0.5; % lowpass filter characterizing lateral inhibation
             Mlat      = H1.*(1-H2.*F);
 
             % Spectral Density of photon noise

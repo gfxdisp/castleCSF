@@ -114,14 +114,14 @@ classdef CSF_Barten_Original < CSF_base
             
             % Temporal filter constants: time constants
             tau1      = tau10./(1+0.55.*log(1+(1+D/1.0).^0.6.*E/3.5));
-            tau2      = tau20./(1+0.37.*log(1+(1+D/3.2).^0.6.*E/120));
+            tau2      = tau20./(1+0.37.*log(1+(1+D/3.2).^5.*E/120));
             
             % Modulation transfer function of the temporal response of the eye
             H1        = 1./(1+(2*pi.*w.*tau1).^2).^(n1/2); % cone responses
             H2        = 1./(1+(2*pi.*w.*tau2).^2).^(n2/2); % lateral inhibation
             
             % Modulation transfer function of the lateral inhibition process
-            F         = 1-sqrt(1-exp(-(u./u0).^2)); % high-pass filter characterizing lateral inhibation
+            F         = 1-sqrt(1-exp(-(u./u0).^2)); % lowpass filter characterizing lateral inhibation
             Mlat      = H1.*(1-H2.*F);
             
             % Spectral Density of photon noise
@@ -177,6 +177,8 @@ classdef CSF_Barten_Original < CSF_base
             
             p         = CSF_base.get_dataset_par();
             
+            % here we included more parameters for optimization to provide
+            % a more fair comparison to CastelCSF
             p.k = 6.85118;
 			p.eta0 = 0.0354405;
 			p.sigma0 = 0.52239;
@@ -190,6 +192,17 @@ classdef CSF_Barten_Original < CSF_base
 			p.tau20 = 0.03434;
 			p.n1 = 4.46403;
 			p.n2 = 2.53013;
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            % Recommended set of parameters when the model is used outside
+            % of the context of comparison
+	        % p.k = 1.44871;
+	        % p.sigma0 = 0.724444;
+	        % p.u00 = 14.9944;
+	        % p.tau10 = 0.0366304;
+	        % p.tau20 = 0.0117484;
+
 
         end
         
