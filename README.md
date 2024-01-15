@@ -81,3 +81,8 @@ Columns:
   180 - nasa (horizontal, toward the nose)
   240 - inferior (vertical, bottom)
   The values are equivalent to the polar coordinates for the right eye. 
+
+
+## Related Work
+- [ColorVideoVDP (CVVDP): A visible difference predictor for colour images and videos](https://github.com/gfxdisp/ColorVideoVDP)
+- [stelaCSF: A unified model of contrast sensitivity as the function of Spatio-Temporal frequency, Eccentricity, Luminance and Area](https://github.com/gfxdisp/stelaCSF) 
