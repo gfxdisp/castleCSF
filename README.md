@@ -84,5 +84,4 @@ Columns:
 
 
 ## Related Work
-- [ColorVideoVDP (CVVDP): A visible difference predictor for colour images and videos](https://github.com/gfxdisp/ColorVideoVDP)
 - [stelaCSF: A unified model of contrast sensitivity as the function of Spatio-Temporal frequency, Eccentricity, Luminance and Area](https://github.com/gfxdisp/stelaCSF) 
