@@ -222,7 +222,6 @@ classdef CSF_Wuerger2020 < CSF_base
             
             p = CSF_base.get_dataset_par();
             
-            p.ach.S_max = [ 2.75269 1.35405 40.0515 ];
 			p.ach.S_max = [ 2.83912 1.28908 43.3254 ];
 			p.ach.f_max = [ 2.53012 9.8288 44.2978 ];
 			p.ach.bw = 1.57304;
