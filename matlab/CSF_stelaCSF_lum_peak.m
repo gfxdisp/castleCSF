@@ -3,13 +3,13 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
     % Spatio-Temporal frequency, Eccentricity, Luminance and Area (thus
     % stela).
     %
-    % The details regarding the model, its derivation and calibration can
-    % be found in the paper:
-    %
+    % Modified form of stelaCSF:
     % Mantiuk, Rafał K, Maliha Ashraf, and Alexandre Chapiro.
     % “StelaCSF - A Unified Model of Contrast Sensitivity as the Function of Spatio-Temporal Frequency , Eccentricity , Luminance and Area.”
     % ACM Transactions on Graphics 41, no. 4 (2022): 145.
     % https://doi.org/10.1145/3528223.3530115.
+    %
+    % The peak of the transient channel filter changes with luminance level
 
     properties( Constant )
         Y_min = 0.001;  % The minimum luminance
@@ -320,24 +320,26 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
 
             p = CSF_base.get_dataset_par();
 
-			p.ach_sust.S_max = [ 56.0639 6.64673 0.144809 5.30245e-07 8.71574e+09 ];
-            p.ach_sust.f_max = [ 1.78263 66.992 0.269402 ];
-            p.ach_sust.bw = 0.000212711;
-            p.ach_sust.a = 0.282947;
-            p.ach_trans.S_max = [ 0.193435 2793.56 ];
-            p.ach_trans.f_max = 0.000326927;
-            p.ach_trans.bw = 2.67727;
+			p.ach_sust.S_max = [ 56.4947 7.54726 0.144532 5.58341e-07 9.66862e+09 ];
+            p.ach_sust.f_max = [ 1.78119 91.5718 0.256682 ];
+            p.ach_sust.bw = 0.000213047;
+            p.ach_sust.a = 0.100207;
+            p.ach_sust.A_0 = 157.103;
+            p.ach_sust.f_0 = 0.702338;
+            p.ach_trans.S_max = [ 0.193434 2748.09 ];
+            p.ach_trans.f_max = 0.000316696;
+            p.ach_trans.bw = 2.6761;
             p.ach_trans.a = 0.000241177;
-            p.ach_trans.A_0 = 3.58559;
-            p.ach_trans.f_0 = 2.94741;
-            p.sigma_trans = 0.085424;
-            p.sigma_sust = 10.467;
-            p.omega_trans_sl = 2.36951;
-            p.omega_trans_c = 4.60295;
-            p.ecc_drop = 0.0259781;
-            p.ecc_drop_nasal = 0.0452708;
-            p.ecc_drop_f = 0.0217926;
-            p.ecc_drop_f_nasal = 0.0068348;
+            p.ach_trans.A_0 = 3.81611;
+            p.ach_trans.f_0 = 3.01389;
+            p.sigma_trans = 0.0844836;
+            p.sigma_sust = 10.5795;
+            p.omega_trans_sl = 2.41482;
+            p.omega_trans_c = 4.7036;
+            p.ecc_drop = 0.0239853;
+            p.ecc_drop_nasal = 0.0400662;
+            p.ecc_drop_f = 0.0189038;
+            p.ecc_drop_f_nasal = 0.00813619;
 
         end
 

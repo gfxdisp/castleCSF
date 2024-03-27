@@ -308,31 +308,31 @@ classdef CSF_castleCSF_chrom < CSF_base
       
             switch colour
                 case 'rg'
-                    p.ch_sust.S_max = [ 603.119 39.1484 0.469632 ];
-					p.ch_sust.f_max = 0.0252664;
-					p.ch_sust.bw = 2.29106;
-					p.A_0 = 2576.1;
-					p.f_0 = 0.0728586;
-					p.sigma_sust = 16.505;
-					p.beta_sust = 1.15244;
-					p.ecc_drop = 0.0591377;
-					p.ecc_drop_nasal = 2.89541e-05;
-					p.ecc_drop_f = 2.04986e-69;
-					p.ecc_drop_f_nasal = 0.172617;
-																					 
+                    p.ch_sust.S_max = [ 681.434 38.0038 0.480386 ];
+                    p.ch_sust.f_max = 0.0178364;
+                    p.ch_sust.bw = 2.42104;
+                    p.A_0 = 2816.44;
+                    p.f_0 = 0.0711058;
+                    p.sigma_sust = 16.4325;
+                    p.beta_sust = 1.15591;
+                    p.ecc_drop = 0.0591402;
+                    p.ecc_drop_nasal = 2.89615e-05;
+                    p.ecc_drop_f = 2.04986e-69;
+                    p.ecc_drop_f_nasal = 0.18108;
+
                 case 'yv'
-                    p.ch_sust.S_max = [ 153.288 67.8963 0.404577 ];
-					p.ch_sust.f_max = 0.00493065;
-					p.ch_sust.bw = 2.65931;
-					p.A_0 = 2.81739e+07;
-					p.f_0 = 0.000630395;
-					p.sigma_sust = 8.23433;
-					p.beta_sust = 1.03276;
-					p.ecc_drop = 0.00356433;
-					p.ecc_drop_nasal = 5.85804e-141;
-					p.ecc_drop_f = 0.00805084;
-					p.ecc_drop_f_nasal = 0.00966713;
-										 								
+                    p.ch_sust.S_max = [ 166.683 62.8974 0.41193 ];
+                    p.ch_sust.f_max = 0.00425753;
+                    p.ch_sust.bw = 2.68197;
+                    p.A_0 = 2.82789e+07;
+                    p.f_0 = 0.000635093;
+                    p.sigma_sust = 7.15012;
+                    p.beta_sust = 0.969123;
+                    p.ecc_drop = 0.00356865;
+                    p.ecc_drop_nasal = 5.85804e-141;
+                    p.ecc_drop_f = 0.00806631;
+                    p.ecc_drop_f_nasal = 0.0110662;
+
                 otherwise
                     error('Invalid colour direction supplied');
             end
