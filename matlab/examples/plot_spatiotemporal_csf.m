@@ -1,8 +1,9 @@
 % Plot CSF functions
 
-
-addpath('../matlab/');
-addpath('../utils/');
+if ~exist('CSF_castleCSF', 'file')
+    addpath('../../matlab/');
+    addpath('../../utils/');
+end
 
 csf_model = CSF_castleCSF();
 
@@ -59,5 +60,5 @@ zlabel( 'Sensitivity')
 title( 'castleCSF');
 
 
-rmpath('../matlab/');
-rmpath('../utils/');
+rmpath('../../matlab/');
+rmpath('../../utils/');
