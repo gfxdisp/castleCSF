@@ -130,11 +130,7 @@ classdef CSF_castleCSF_chrom < CSF_base
 
             S_max = obj.get_lum_dep( ch_pars.S_max, lum );
             f_max = obj.get_lum_dep( ch_pars.f_max, lum );
-%            gamma = obj.get_lum_dep( ch_pars.gamma, lum );
-
             bw = ch_pars.bw;
-            %bw = max( 0.01, ach_pars.bw - ach_pars.ecc_bw_drop*ecc);
-%             a = ch_pars.a;
 
             % Truncated log-parabola for chromatic directions
             S_LP = 10.^( -abs(log10(freq) - log10(f_max)).^2./(2.^bw) );
@@ -212,7 +208,6 @@ classdef CSF_castleCSF_chrom < CSF_base
                         csfpar.luminance = LL(:);
                         csfpar.s_frequency = ff(:);
                         csfpar.t_frequency = OMEGAs(pp);
-                        %csfpar.area = pi*(0.5./ff(:)).^2;
                         csfpar.area = pi*(1.5).^2;
                         csfpar.eccentricity = 0;
 
@@ -260,11 +255,8 @@ classdef CSF_castleCSF_chrom < CSF_base
                     clf;
                     html_change_figure_print_size( gcf, 10, 10 );
                     L = logspace( -2, 4 );
-                    %                     if plt_id == 5
                     f_max = obj.par.ch_sust.f_max;
-                    %                     else
-                    %                         f_max = obj.par.ach_trans.f_max;
-                    %                     end
+
                     plot( L,  obj.get_lum_dep( f_max, L ) );
                     set_axis_tick_label( 'x', 'luminance', L );
                     set_axis_tick_label( 'y', 'frequency', [0.01 60] );

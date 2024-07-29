@@ -2,8 +2,22 @@ classdef CSF_castleCSF < CSF_base
     % Colour, Area, Spatial frequency, Temporal frequency, Luminance,
     % Eccentricity dependent Contrast Sensitivity Function (CSF)
     %
+    % Model from: 
+    % Ashraf, M., Mantiuk, R. K., Chapiro, A., & Wuerger, S. (2024). 
+    % castleCSF—A contrast sensitivity function of color, area, spatiotemporal 
+    % frequency, luminance and eccentricity. Journal of Vision, 24(4), 5-5.
+    %
     % Refer to CSF_base.m for the documentation of the main interface
     % functions. 
+    %
+    % Example: 
+    % csf_model = CSF_castleCSF();
+    % csf_pars = struct( 's_frequency', 4, 't_frequency', 1, 'orientation', 0,... 
+    %   'lms_bkg', [0.7443 0.3054 0.0157], 'lms_delta', [0.9182, 0.3953, 0.0260],... 
+    %   'area', 1, 'eccentricity', 0 );          
+    % S = csf_model.sensitivity( csf_pars );   
+    %
+    % Subfunctions: CSF_stelaCSF_lum_peak, CSF_castleCSF_chrom
 
     properties( Constant )
        % which entries in the meachism matrix should be fixed to 1
@@ -60,7 +74,6 @@ classdef CSF_castleCSF < CSF_base
             if isfield(obj.par, 'colmat')
                 M_lms2acc(~obj.Mones(:)) = obj.par.colmat;
             else
-%                 colmat = [ 0.00123883 0.229778 0.932581 1.07013 6.41585e-07 0.0037047 ];
                 M_lms2acc(~obj.Mones(:)) = obj.colmat;
             end 
             % Get the right sign
@@ -89,9 +102,7 @@ classdef CSF_castleCSF < CSF_base
             lms_delta = csf_pars.lms_delta;
                         
             [C_A, C_R, C_Y] = csf_chrom_directions( obj, lms_bkg, lms_delta);
-            
-%             obj = obj.update_parameters();
-            
+                        
             C_A_n = C_A.*obj.castleCSF_ach.sensitivity(csf_pars);
             C_R_n = C_R.*obj.castleCSF_rg.sensitivity(csf_pars);
             C_Y_n = C_Y.*obj.castleCSF_yv.sensitivity(csf_pars);
@@ -105,16 +116,13 @@ classdef CSF_castleCSF < CSF_base
             
             t_freqs = csf_pars.t_frequency;
             tf_sel = t_freqs == 0;   % Check whether disk is static or temporally modulated
-            
-%             csf_pars_orig = csf_pars;
-            
+                        
             if isempty(tf_sel)
                 S = [];
                 return;
             end
             
                 csf_pars.s_frequency = logspace( log10(0.125), log10(16), 100 )';
-%                 csf_pars.t_frequency = t_freqs(~tf_sel);
                 csf_pars = obj.test_complete_params(csf_pars, { 'luminance', 'ge_sigma' } );
                 radius = csf_pars.ge_sigma; % Store ge_sigma for multiple receptor circumference model
                 radius = radius(:);
@@ -146,38 +154,24 @@ classdef CSF_castleCSF < CSF_base
            
             M_lms2acc = obj.get_lms2acc();
             
-%            lum = sum(LMS_mean,ndims(LMS_mean));
-            
-%             if (size(freq, 1) ~= size(LMS_mean, 1)) && (numel(freq)~=1) && (numel(LMS_mean)~=3)
             if (numel(size(LMS_mean)) > 2)  && (numel(LMS_mean)~=3)
                 dim3_size = size(LMS_mean);
                 dim1_size = dim3_size(1:end-1);
             else
                 dim1_size = [max( size(LMS_mean, 1), size(LMS_delta, 1)), 1];
             end
-            
-            if 0
-                % Cone contrast
-                CC_LMS = LMS_delta ./ LMS_mean;            
-                CC_ACC = reshape(CC_LMS, numel(CC_LMS)/3, 3) * M_lms2acc';
+ 
+            % Post-receptoral
+            ACC_mean = abs(reshape(LMS_mean, numel(LMS_mean)/3, 3) * M_lms2acc');
+            ACC_delta = abs(reshape(LMS_delta, numel(LMS_delta)/3, 3) * M_lms2acc');
 
-                C_A = reshape(abs(CC_ACC(:,1)), dim1_size);
-                C_R = reshape(abs(CC_ACC(:,2)), dim1_size);
-                C_Y = reshape(abs(CC_ACC(:,3)), dim1_size);
-            
-            else
-                % Post-receptoral
-                ACC_mean = abs(reshape(LMS_mean, numel(LMS_mean)/3, 3) * M_lms2acc');
-                ACC_delta = abs(reshape(LMS_delta, numel(LMS_delta)/3, 3) * M_lms2acc');
-
-                alpha = 0;
-                C_A = reshape(abs(ACC_delta(:,1)./...
-                    ACC_mean(:,1)),dim1_size);
-                C_R = reshape(abs(ACC_delta(:,2)./...
-                    (alpha*ACC_mean(:,2) + (1-alpha)*ACC_mean(:,1)) ),dim1_size);
-                C_Y = reshape(abs(ACC_delta(:,3)./...
-                    (alpha*ACC_mean(:,3) + (1-alpha)*ACC_mean(:,1))),dim1_size);
-            end
+            alpha = 0;
+            C_A = reshape(abs(ACC_delta(:,1)./...
+                ACC_mean(:,1)),dim1_size);
+            C_R = reshape(abs(ACC_delta(:,2)./...
+                (alpha*ACC_mean(:,2) + (1-alpha)*ACC_mean(:,1)) ),dim1_size);
+            C_Y = reshape(abs(ACC_delta(:,3)./...
+                (alpha*ACC_mean(:,3) + (1-alpha)*ACC_mean(:,1))),dim1_size);
         end
         
         
@@ -204,7 +198,6 @@ classdef CSF_castleCSF < CSF_base
             switch( plt_id )
                 case 'col_mech' 
                     figure,
-
                     M = obj.get_lms2acc();                    
                     cm_lms = inv(M)*eye(3);
                     cm_dkl = lms2dkl_d65(cm_lms);
@@ -222,7 +215,6 @@ classdef CSF_castleCSF < CSF_base
                         hh = [];
                         for cc=1:3
                             hh(cc) = quiver( 0, 0, cm_dkl(dd(1), cc), cm_dkl(dd(2), cc), 'Color', COLORs(cc,:), 'DisplayName', mech_label{cc} );
-                            %text( cm_dkl(2, cc), cm_dkl(3, cc), mech_label{cc}, 'Color', COLORs(cc,:) )
                             hold on
                         end
                         xlabel( dkl_label{dd(1)} );
@@ -233,14 +225,10 @@ classdef CSF_castleCSF < CSF_base
                     end
 
                 case 'sust_trans' % sust-trans-response
-                    clf;
-                    html_change_figure_print_size( gcf, 10, 10 );
+                    figure,
                     omega = linspace( 0, 60 );
                     lums = [0.1 30 1000];
 																								
-						   
-																								  
-
                     hold on,
                     
                     for ll = 1:length(lums)
@@ -265,6 +253,7 @@ classdef CSF_castleCSF < CSF_base
                     grid on;
 
                 case 'peak_s' 
+                    figure,
                     obj.castleCSF_ach.plot_mechanism(plt_id);
 
                 otherwise
@@ -287,11 +276,12 @@ classdef CSF_castleCSF < CSF_base
             
         end
         
-        function print( obj, fh )
+        function print( obj )
             % Print the model parameters in a format ready to be pasted into
             % get_default_par()
                         
             M_lms2acc = obj.get_lms2acc();
+            fh = 1;
             
             fprintf( fh, evalc( 'M_lms2acc' ) );
             

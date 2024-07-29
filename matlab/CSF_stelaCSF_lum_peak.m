@@ -95,13 +95,6 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
             S_sust = obj.csf_achrom( rho, A, lum, ecc, obj.par.ach_sust );
             S_trans = obj.csf_achrom( rho, A, lum, ecc, obj.par.ach_trans );
 
-%             if obj.ps_beta ~= 1
-%                 beta = obj.ps_beta;
-%                 S = ( (R_sust.*S_sust).^beta + (R_trans.*S_trans).^beta).^(1/beta);
-%             else
-%                 S = R_sust.*S_sust + R_trans.*S_trans;
-%             end
-
             S_aux = 0; %obj.aux_sensitivity( csf_pars );
             pm_ratio=1;
             if obj.ps_beta ~= 1 
@@ -143,12 +136,8 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
         function [R_sust, R_trans] = get_sust_trans_resp(obj, omega, lum)
             sigma_sust = obj.par.sigma_sust;
             beta_sust = 1.3314;
-            if 0
-                omega_0 = 5;
-            else
-                omega_0 = log10(lum).*obj.par.omega_trans_sl + obj.par.omega_trans_c;
-            end
 
+            omega_0 = log10(lum).*obj.par.omega_trans_sl + obj.par.omega_trans_c;
 
             beta_trans = 0.1898;
             sigma_trans = obj.par.sigma_trans;
@@ -164,10 +153,7 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
 
             S_max = obj.get_lum_dep( ach_pars.S_max, lum );
             f_max = obj.get_lum_dep( ach_pars.f_max, lum );
-            %gamma = obj.get_lum_dep( ach_pars.gamma, lum );
-
             bw = ach_pars.bw;
-            %bw = max( 0.01, ach_pars.bw - ach_pars.ecc_bw_drop*ecc);
             a = ach_pars.a;
 
             % Truncated log-parabola
@@ -250,7 +236,6 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
                         csfpar.luminance = LL(:);
                         csfpar.s_frequency = ff(:);
                         csfpar.t_frequency = OMEGAs(pp);
-                        %csfpar.area = pi*(0.5./ff(:)).^2;
                         csfpar.area = pi*(1.5).^2;
                         csfpar.eccentricity = 0;
 
@@ -298,11 +283,8 @@ classdef CSF_stelaCSF_lum_peak < CSF_base
                     clf;
                     html_change_figure_print_size( gcf, 10, 10 );
                     L = logspace( -2, 4 );
-                    %                     if plt_id == 5
                     f_max = obj.par.ach_sust.f_max;
-                    %                     else
-                    %                         f_max = obj.par.ach_trans.f_max;
-                    %                     end
+
                     plot( L,  obj.get_lum_dep( f_max, L ) );
                     set_axis_tick_label( 'x', 'luminance', L );
                     set_axis_tick_label( 'y', 'frequency', [0.01 60] );

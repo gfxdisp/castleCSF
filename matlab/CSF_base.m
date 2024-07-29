@@ -160,7 +160,7 @@ classdef CSF_base
 
             valid_names = { 'luminance', 'lms_bkg', 'lms_delta', 's_frequency', 't_frequency', 'orientation', 'area', 'ge_sigma', 'eccentricity', 'vis_field' };            
             fn = fieldnames( pars );
-%             N = 1; % The size of the vector
+
             cur_par = 1;
             for kk=1:length(fn)
                 if ~ismember( fn{kk}, valid_names )
@@ -175,23 +175,13 @@ classdef CSF_base
                         if p_sz(end) ~= 3
                             error( 'The last dimension of ''%s'' must have size 3', fn{kk} );
                         end
-                        %param = reshape( param, [p_sz(1:(end-1)) 1 3] );
+
                     end                    
                     cur_par = cur_par .* param;
                 catch
                     error( 'Parameter %s cannot be broadcasted', fn{kk});
                 end
                 
-%                 if numel(pars.(fn{kk})) > 1
-%                     Nc = numel(pars.(fn{kk}))/par_len;
-%                     if N==1
-%                         N = Nc;
-%                     else
-%                         if Nc~=1 && N ~= Nc
-%                             error( 'Inconsistent size of the parameter ''%s''', fn{kk} );
-%                         end
-%                     end
-%                 end
             end
 
             if ismember( 'luminance', requires )
@@ -208,7 +198,7 @@ classdef CSF_base
                     if ~isfield( pars, 'luminance')
                         error( 'You need to pass either luminance or lms_bkg parameter.')
                     end
-                    %error( 'Not implemented' )
+
                     pars.lms_bkg = [0.6991 0.3009 0.0198] .* pars.luminance;
                 end
             end
@@ -239,17 +229,7 @@ classdef CSF_base
                     pars.(fn_dp{kk}) = def_pars.(fn_dp{kk});
                 end
             end
-            
-%             if expand && N>1
-%                 % Make all parameters the same height 
-%                 fn = fieldnames( pars );
-%                 for kk=1:length(fn)
-%                     if size(pars.(fn{kk}),1)==1
-%                         pars.(fn{kk}) = repmat( pars.(fn{kk}), [N 1]);
-%                     end
-%                 end                
-%             end            
-
+                  
         end
         
                 
@@ -335,9 +315,7 @@ classdef CSF_base
                     end
                 end
             end
-%             if (pos-1) ~= length(pars_vector)
-%                 error( 'The parameter vector contains %d elements while the model has %d optimized parameters. Perhaps the optimized for a different set of datasets?', length(pars_vector), (pos-1) );
-%             end
+
         end
         
         
@@ -364,9 +342,7 @@ classdef CSF_base
         
         function v = get_lum_dep( pars, L )
             % A family of functions modeling luminance dependency
-            
-            %log_lum = log10(L);
-            
+                        
             switch length(pars)
                 case 1
                     % Constant
@@ -374,11 +350,7 @@ classdef CSF_base
                 case 2
                     % Linear in log
                     v = pars(2)*L.^pars(1);
-                    %v = 10.^(pars(1)*log_lum + log10(pars(2)));
                 case 3
-                    % Log parabola
-                    %        v = pars(1) * 10.^(exp( -(log_lum-pars(2)).^2/pars(3) ));
-                    
                     % A single hyperbolic function
                     v = pars(1)*(1+pars(2)./L).^(-pars(3));
                 case 5
@@ -407,11 +379,7 @@ classdef CSF_base
                 case 3        
                     % A single hyperbolic function
                     v = pars(1)* (1-(1+pars(2)./L).^(-pars(3)));
-                case 5
-                    % Two hyperbolic functions
-                    error( 'TODO' );
-                    v = pars(1)*(1+pars(2)./L).^(-pars(3)) .* (1-(1+pars(4)./L).^(-pars(5)));
-                otherwise
+                 otherwise
                     error( 'not implemented' );
             end
             
