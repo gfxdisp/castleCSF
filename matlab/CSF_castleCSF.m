@@ -203,8 +203,7 @@ classdef CSF_castleCSF < CSF_base
         function plot_mechanism( obj, plt_id )
             switch( plt_id )
                 case 'col_mech' 
-                    clf;
-                    html_change_figure_print_size( gcf, 20, 10 );
+                    figure,
 
                     M = obj.get_lms2acc();                    
                     cm_lms = inv(M)*eye(3);
