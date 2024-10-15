@@ -85,3 +85,13 @@ Columns:
 
 ## Related Work
 - [stelaCSF: A unified model of contrast sensitivity as the function of Spatio-Temporal frequency, Eccentricity, Luminance and Area](https://github.com/gfxdisp/stelaCSF) 
+
+
+# Release Notes
+* v0.2.0 (27/March/2024) 
+  - Version used in Ashraf et al. (2024), ([castleCSF](http://dx.doi.org/10.1167/jov.24.4.5)).
+
+* v0.1.0 - Initial internal release (21/Dec/2023).
+  
+
+The detailed list of changes can be found in [ChangeLog.md](ChangeLog.md).
