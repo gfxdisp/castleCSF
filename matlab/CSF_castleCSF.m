@@ -154,26 +154,41 @@ classdef CSF_castleCSF < CSF_base
            
             M_lms2acc = obj.get_lms2acc();
             
-            if (numel(size(LMS_mean)) > 2)  && (numel(LMS_mean)~=3)
-                dim3_size = size(LMS_mean);
-                dim1_size = dim3_size(1:end-1);
-            else
-                dim1_size = [max( size(LMS_mean, 1), size(LMS_delta, 1)), 1];
-            end
+            % if (numel(size(LMS_mean)) > 2)  && (numel(LMS_mean)~=3)
+            %     dim3_size = size(LMS_mean);
+            %     dim1_size = dim3_size(1:end-1);
+            % else
+            %     dim1_size = [max( size(LMS_mean, 1), size(LMS_delta, 1)), 1];
+            % end
+
+            target_size = max( [size(LMS_mean); size(LMS_delta)] );
+            assert( target_size(end)==3 ); % The last dimension must be LMS
+            target_size = target_size(1:(end-1)); % remove the last dim
  
             % Post-receptoral
-            ACC_mean = abs(reshape(LMS_mean, numel(LMS_mean)/3, 3) * M_lms2acc');
-            ACC_delta = abs(reshape(LMS_delta, numel(LMS_delta)/3, 3) * M_lms2acc');
+            ACC_mean = reshape( abs(reshape(LMS_mean, numel(LMS_mean)/3, 3) * M_lms2acc'), size(LMS_mean) );
+            ACC_delta = reshape( abs(reshape(LMS_delta, numel(LMS_delta)/3, 3) * M_lms2acc'), size(LMS_delta) );
+
+            otherdims_delta = repmat({':'},1,ndims(ACC_delta)-1);
+            otherdims_mean = repmat({':'},1,ndims(ACC_delta)-1);
 
             alpha = 0;
-            C_A = reshape(abs(ACC_delta(:,1)./...
-                ACC_mean(:,1)),dim1_size);
-            C_R = reshape(abs(ACC_delta(:,2)./...
-                (alpha*ACC_mean(:,2) + (1-alpha)*ACC_mean(:,1)) ),dim1_size);
-            C_Y = reshape(abs(ACC_delta(:,3)./...
-                (alpha*ACC_mean(:,3) + (1-alpha)*ACC_mean(:,1))),dim1_size);
+            C_A = obj.reshape_fix(abs(ACC_delta(otherdims_delta{:},1)./...
+                ACC_mean(otherdims_mean{:},1)), target_size);
+            C_R = obj.reshape_fix(abs(ACC_delta(otherdims_delta{:},2)./...
+                (alpha*ACC_mean(otherdims_mean{:},2) + (1-alpha)*ACC_mean(otherdims_mean{:},1)) ), target_size);
+            C_Y = obj.reshape_fix(abs(ACC_delta(otherdims_delta{:},3)./...
+                (alpha*ACC_mean(otherdims_mean{:},3) + (1-alpha)*ACC_mean(otherdims_mean{:},1))), target_size);
         end
         
+        % Handle reshape for cases when size = [1]
+        function Y = reshape_fix( obj, X, sz )
+            if isscalar(sz)
+                Y = X;
+            else
+                Y = reshape( X, sz );
+            end
+        end
         
         function pd = get_plot_description( obj )
             pd = struct();
