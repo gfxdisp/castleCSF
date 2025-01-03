@@ -160,8 +160,8 @@ classdef CSF_base
 
             valid_names = { 'luminance', 'lms_bkg', 'lms_delta', 's_frequency', 't_frequency', 'orientation', 'area', 'ge_sigma', 'eccentricity', 'vis_field' };            
             fn = fieldnames( pars );
-
             cur_par = 1;
+            color_dim = [];
             for kk=1:length(fn)
                 if ~ismember( fn{kk}, valid_names )
                     error( 'Parameter structure contains unrecognized field ''%s''', fn{kk} );
@@ -175,13 +175,36 @@ classdef CSF_base
                         if p_sz(end) ~= 3
                             error( 'The last dimension of ''%s'' must have size 3', fn{kk} );
                         end
-
+                        if ~isempty(color_dim) && color_dim ~= ndims(param)
+                            error( 'LMS colour must be %d-th dimension of your input parameters', color_dim );
+                        end
+                        color_dim = ndims(param);
+                        % RM: I am unsure why the following was needed
+                        %param = reshape( param, [p_sz(1:(end-1)) 1 3] );
                     end                    
                     cur_par = cur_par .* param;
-                catch
-                    error( 'Parameter %s cannot be broadcasted', fn{kk});
+                catch E
+                    if strcmp( E.identifier, 'MATLAB:sizeDimensionsMustMatch' )
+                        error( 'Parameter %s cannot be broadcasted', fn{kk});
+                    else
+                        rethrow( E );
+                    end
                 end
                 
+%                 if numel(pars.(fn{kk})) > 1
+%                     Nc = numel(pars.(fn{kk}))/par_len;
+%                     if N==1
+%                         N = Nc;
+%                     else
+%                         if Nc~=1 && N ~= Nc
+%                             error( 'Inconsistent size of the parameter ''%s''', fn{kk} );
+%                         end
+%                     end
+%                 end
+            end
+
+            if isempty( color_dim )
+                color_dim = ndims(cur_par)+1;
             end
 
             if ismember( 'luminance', requires )
@@ -199,7 +222,7 @@ classdef CSF_base
                         error( 'You need to pass either luminance or lms_bkg parameter.')
                     end
 
-                    pars.lms_bkg = [0.6991 0.3009 0.0198] .* pars.luminance;
+                    pars.lms_bkg = reshape( [0.6991 0.3009 0.0198], [ones(1,color_dim-1) 3]) .* pars.luminance;
                 end
             end
 
@@ -222,14 +245,23 @@ classdef CSF_base
             end
             
             % Default parameter values
-            def_pars = struct( 'eccentricity', 0, 'vis_field', 180, 'orientation', 0, 't_frequency', 0, 'lms_delta', [0.6855 0.2951 0.0194] );
+            def_pars = struct( 'eccentricity', 0, 'vis_field', 180, 'orientation', 0, 't_frequency', 0, 'lms_delta', reshape( [0.6855 0.2951 0.0194], [ones(1,color_dim-1) 3]) );
             fn_dp = fieldnames( def_pars );
             for kk=1:length(fn_dp)
                 if ~isfield(pars, fn_dp{kk})
                     pars.(fn_dp{kk}) = def_pars.(fn_dp{kk});
                 end
             end
-                  
+            
+%             if expand && N>1
+%                 % Make all parameters the same height 
+%                 fn = fieldnames( pars );
+%                 for kk=1:length(fn)
+%                     if size(pars.(fn{kk}),1)==1
+%                         pars.(fn{kk}) = repmat( pars.(fn{kk}), [N 1]);
+%                     end
+%                 end                
+%             end                              
         end
         
                 
