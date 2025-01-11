@@ -113,6 +113,9 @@ classdef CSF_castleCSF < CSF_base
         end
         
         function S = sensitivity_edge(obj, csf_pars)
+            % Contrast sensitivity for discs, based on: 
+            % "Modeling contrast sensitivity of discs", Maliha Ashraf,
+            % Rafał K. Mantiuk and Alexandre Chapiro., http://dx.doi.org/10.2352/EI.2023.35.10.HVEI-246            
             
             t_freqs = csf_pars.t_frequency;
             tf_sel = t_freqs == 0;   % Check whether disk is static or temporally modulated
@@ -122,31 +125,44 @@ classdef CSF_castleCSF < CSF_base
                 return;
             end
             
-                csf_pars.s_frequency = logspace( log10(0.125), log10(16), 100 )';
-                csf_pars = obj.test_complete_params(csf_pars, { 'luminance', 'ge_sigma' } );
-                radius = csf_pars.ge_sigma; % Store ge_sigma for multiple receptor circumference model
-                radius = radius(:);
-                csf_pars = rmfield(csf_pars, 'ge_sigma');
-                
-                if isfield(obj.par, 'disc_area')
-                    csf_pars.area = obj.par.disc_area;
-                else
-                    % Optimized area and beta params from Gabor vs disc csf paper
-                    csf_pars.area = 2.42437; % Replace area parameter with fixed optimized area
-                end
-                if isfield(obj.par, 'disc_beta')
-                    beta = obj.par.disc_beta;
-                else
-                    % Optimized area and beta params from Gabor vs disc csf paper
-                    beta = 3.01142;
-                end
-                
-                S_gabor = sensitivity(obj, csf_pars);
-                S1 = S_gabor.* (radius'.^(1/beta));
-                S1 = max(S1);
+            if isfield( csf_pars, 's_frequency' ) || isfield( csf_pars, 'area' )
+                error( "Frequency or area cannot be specified when computing sensitivity for discs" );
+            end
+            csf_pars = obj.test_complete_params(csf_pars, { 'luminance', 'ge_sigma' } );
 
-                S = permute(S1, circshift(1:numel(size(S1)), -1)); 
+            % add extra dimension for spatial frequency
+            fn = fieldnames(csf_pars);
+            for kk=1:length(fn)
+                if ~isscalar( csf_pars.(fn{kk}))
+                    csf_pars.(fn{kk}) = reshape( csf_pars.(fn{kk}), [1 size(csf_pars.(fn{kk}))] );
+                end
+            end
+            csf_pars.s_frequency = logspace( log10(0.125), log10(16), 64 )';
 
+            radius = csf_pars.ge_sigma; % Store ge_sigma for multiple receptor circumference model
+            csf_pars = rmfield(csf_pars, 'ge_sigma');
+            
+            if isfield(obj.par, 'disc_area')
+                csf_pars.area = obj.par.disc_area;
+            else
+                % Optimized area and beta params from Gabor vs disc csf paper
+                csf_pars.area = 2.42437; % Replace area parameter with fixed optimized area
+            end
+            if isfield(obj.par, 'disc_beta')
+                beta = obj.par.disc_beta;
+            else
+                % Optimized area and beta params from Gabor vs disc csf paper
+                beta = 3.01142;
+            end
+            
+            S_gabor = sensitivity(obj, csf_pars);
+            S1 = S_gabor.* (radius.^(1/beta));
+            S1 = max(S1, [], 1);
+
+            % Remove the 1st dimension, which we used for spatial
+            % frequencies
+            sz = size(S1);
+            S = reshape( S1, sz(2:end) );
         end
         
         
