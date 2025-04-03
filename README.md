@@ -16,11 +16,11 @@ The details about the model and the dataset can be found on the project [website
 
 Currently, the code is provided as a Matlab class in the directory `matlab`. 
 
-### Example
+### Examples
 
 Please check the directory `examples` to use castleCSF for predicting and plotting contrast sensitivity.
 
-# Broadcasting across multiple dimensions
+### Broadcasting across multiple dimensions
 
 castleCSF fully support broadcasting. For example, to predict sensitivity for all combinations of spatial and temporal frequencies, you can call:
 ```
@@ -35,7 +35,7 @@ S = csf_model.sensitivity( csf_pars );
 Note that `s_frequency` is passed as a [1 30] tensor and `t_frequency` as a [30 1] tensor (see transpose). The resulting sensitivity tensor `S` is [30 30].
 
 To compute sensitivity for large number of data points, use broadcasting instead of calling `csf_model.sensitivity` multiple times. 
-See also [examples/plot_spatiotemporal_csf.m](examples/plot_spatiotemporal_csf.m).
+See also [matlab/examples/plot_spatiotemporal_csf.m](matlab/examples/plot_spatiotemporal_csf.m).
 
 
 ## Data
@@ -106,10 +106,20 @@ Columns:
 
 
 # Release Notes
+
+* v0.2.3 (03/April/2025)
+  - Fixed bug in the truncated parabola, used for chromatic components of the CSF
+  - Added an example showing how to use broadcasting
+
+* v0.2.2 (11/January/2025)
+  - All paramers are now broadcasted - see README.md for more details.
+
+* v0.2.1 (29/July/2024)
+  - Added more example files (`plot_csf_internal_mechanisms.m` and `plot_temporal_csf.m`) for castleCSF applications.
+
 * v0.2.0 (27/March/2024) 
   - Version used in Ashraf et al. (2024), ([castleCSF](http://dx.doi.org/10.1167/jov.24.4.5)).
 
-* v0.1.0 - Initial internal release (21/Dec/2023).
-  
+* v0.1.0 - Initial internal release (21/Dec/2023).  
 
 The detailed list of changes can be found in [ChangeLog.md](ChangeLog.md).
