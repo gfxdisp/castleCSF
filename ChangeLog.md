@@ -1,3 +1,10 @@
+# v0.2.3 (03/April/2025)
+* Fixed bug in the truncated parabola, used for chromatic components of the CSF
+* Added an example showing how to use broadcasting
+
+# v0.2.2 (11/January/2025)
+* All paramers are now broadcasted - see README.md for more details.
+
 # v0.2.1 (29/July/2024)
 * Added more example files (`plot_csf_internal_mechanisms.m` and `plot_temporal_csf.m`) for castleCSF applications.
 

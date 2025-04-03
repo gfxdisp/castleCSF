@@ -20,6 +20,24 @@ Currently, the code is provided as a Matlab class in the directory `matlab`.
 
 Please check the directory `examples` to use castleCSF for predicting and plotting contrast sensitivity.
 
+# Broadcasting across multiple dimensions
+
+castleCSF fully support broadcasting. For example, to predict sensitivity for all combinations of spatial and temporal frequencies, you can call:
+```
+csf_model = CSF_castleCSF();
+
+t_frequency = logspace( 0.1, log10(64), 30 );           % Temporal frequency in Hz
+s_frequency = logspace( log10(0.5), log10(64), 30 );    % Spatial frequency in cycles per degree
+
+csf_pars = struct( 's_frequency', s_frequency, 't_frequency', t_frequency', 'area', 1, 'luminance', 100 );
+S = csf_model.sensitivity( csf_pars );        
+```
+Note that `s_frequency` is passed as a [1 30] tensor and `t_frequency` as a [30 1] tensor (see transpose). The resulting sensitivity tensor `S` is [30 30].
+
+To compute sensitivity for large number of data points, use broadcasting instead of calling `csf_model.sensitivity` multiple times. 
+See also [examples/plot_spatiotemporal_csf.m](examples/plot_spatiotemporal_csf.m).
+
+
 ## Data
 
 Each datapoint represents a Gabor patch at the detection threshold, either for individual observers, or averaged across all observers. The sensitivity is averaged in the log-contrast space. 

@@ -1,19 +1,19 @@
 % Plot CSF functions
 
-if ~contains(path, '../')
-    addpath(genpath('../'));
+if ~exist( 'CSF_castleCSF', 'file' )
+    addpath( fullfile( fileparts(mfilename('fullpath')), '..' ) );
 end
 
 csf_model = CSF_castleCSF();
 
 % 3D plot - as the function of spatial and temporal frequency
-figure;
+figure(1);
+clf
 
 %%%%%%%%%%%%%%%%%%%% Inputs to the model %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 t_frequency = logspace( 0.1, log10(64), 30 );           % Temporal frequency in Hz
 s_frequency = logspace( log10(0.5), log10(64), 30 );    % Spatial frequency in cycles per degree
-
 
 orientation = 0;    % Orientation of grating in degrees
 area = 1;           % Area of stimulus in visual sq. degrees
@@ -38,15 +38,20 @@ lms_modulation_delta = lms_modulation_peak-lms_background;
 lms_delta_norm = lms_modulation_delta./norm(lms_modulation_delta);
 
 
-[ss, tt] = meshgrid( s_frequency, t_frequency );
+% castleCSF fully support broadcasting:
+% s_frequency has the dimensions [1 N]
+% t_frequency has the dimensions [M 1]
+% The resulting S will have the dimension [M N] and provide sensitivity
+% for all combinations of spatial and temporal frequencies
+% Note that the LMS colour coordinates must be provides as the last
+% dimension (3rd dimension) and hence reshape(lms_background, [1 1 3]).
 
-csf_pars = struct( 's_frequency', ss(:), 't_frequency', tt(:),... 
+csf_pars = struct( 's_frequency', s_frequency, 't_frequency', t_frequency',... 
     'orientation', orientation, 'area', area, 'eccentricity', eccentricity,...
-    'lms_bkg', lms_background,...
-    'lms_delta', lms_delta_norm);     
+    'lms_bkg', reshape(lms_background, [1 1 3]),...
+    'lms_delta', reshape(lms_delta_norm, [1 1 3]) );
 
 S = csf_model.sensitivity( csf_pars );        
-S = reshape( S, size(ss) );
 
 surf( s_frequency, t_frequency, S, 'FaceColor', 'interp', 'FaceLighting', 'phong' );
 set( gca, 'XScale', 'log' );
@@ -58,6 +63,3 @@ ylabel( 'Temporal frequency [Hz]')
 zlabel( 'Sensitivity')
 title( 'castleCSF');
 
-if ~contains(path, '../')
-    rmpath(genpath('../'));
-end
