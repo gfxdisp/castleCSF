@@ -133,14 +133,10 @@ classdef CSF_castleCSF_chrom < CSF_base
             bw = ch_pars.bw;
 
             % Truncated log-parabola for chromatic directions
-            S_LP = 10.^( -abs(log10(freq) - log10(f_max)).^2./(2.^bw) );
+            S_LP = 10.^( -abs(log10(freq) - log10(f_max)).^2./(2^bw) );
             ss = (freq<f_max);
-            max_mat = repmat(max(S_LP), size(freq));
-            if numel(max_mat) == 1
-                S_LP(ss) = max_mat;
-            else
-                S_LP(ss) = max_mat(ss);
-            end
+            max_S_LP = 1;
+            S_LP(ss) = max_S_LP;
 
             S_peak = S_max .* S_LP;
 
