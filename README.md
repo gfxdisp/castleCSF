@@ -22,7 +22,7 @@ Please check the directory `examples` to use castleCSF for predicting and plotti
 
 ### Broadcasting across multiple dimensions
 
-castleCSF fully support broadcasting. For example, to predict sensitivity for all combinations of spatial and temporal frequencies, you can call:
+castleCSF fully support broadcasting. For example, to predict sensitivity for all combinations of spatial and temporal frequencies, you can run:
 ```
 csf_model = CSF_castleCSF();
 
@@ -32,7 +32,7 @@ s_frequency = logspace( log10(0.5), log10(64), 30 );    % Spatial frequency in c
 csf_pars = struct( 's_frequency', s_frequency, 't_frequency', t_frequency', 'area', 1, 'luminance', 100 );
 S = csf_model.sensitivity( csf_pars );        
 ```
-Note that `s_frequency` is passed as a [1 30] tensor and `t_frequency` as a [30 1] tensor (see transpose). The resulting sensitivity tensor `S` is [30 30].
+Note that `s_frequency` is passed as a [1 30] tensor and `t_frequency` as a [30 1] tensor (see the transpose). The resulting sensitivity tensor `S` has the size of [30 30].
 
 To compute sensitivity for large number of data points, use broadcasting instead of calling `csf_model.sensitivity` multiple times. 
 See also [matlab/examples/plot_spatiotemporal_csf.m](matlab/examples/plot_spatiotemporal_csf.m).
