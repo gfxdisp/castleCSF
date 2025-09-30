@@ -38,6 +38,8 @@ classdef CSF_Pyramid_comb < CSF_base
                 lv = load( fitted_par_vector_file );
                 obj.par = obj.param2struct( obj.par, lv.fitted_par_vector );
             end
+
+            obj = obj.update_parameters();
         end
         
         function name = short_name( obj )

@@ -107,6 +107,9 @@ Columns:
 
 # Release Notes
 
+* v0.2.4 (30/September/2025)
+  - Parent class constructor now automatically propagates parameter updates to all subclasses
+
 * v0.2.3 (03/April/2025)
   - Fixed bug in the truncated parabola, used for chromatic components of the CSF
   - Added an example showing how to use broadcasting

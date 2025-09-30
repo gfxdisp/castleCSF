@@ -54,6 +54,7 @@ classdef CSF_castleCSF < CSF_base
             obj.castleCSF_rg = CSF_castleCSF_chrom('rg');
             obj.castleCSF_yv = CSF_castleCSF_chrom('yv');
             obj.par = obj.get_default_par();
+            obj = obj.update_parameters(); % Update parameters in subclasses
             
         end
         
